@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <style>
+        body{
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container{
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            width: 90%;
+            max-width: 350px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        input{
+            width: 80%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            outline: none;
+            margin-bottom: 15px;
+        }
+        button{
+            padding: 10px 15px;
+            border: none;
+            background: #4facfe;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        button:hover{
+            background: #3a8de0;
+        }
+        h2{
+            margin-top: 20px;
+        }
+        @media (max-width: 400px) {
+            .container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Weather App</h1>
+        <input type="text" placeholder="Enter city name">
+        <br>
+        <button>check weather</button>
+        <h2></h2>
+    </div>
+</body>
+<script>
+    let cityName = document.querySelector("input");
+    let btn = document.querySelector("button");
+    let display = document.querySelector("h2");
+
+    btn.addEventListener("click", () => {
+        fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cityName.value}&appid=5af0a63cb5b0d2555d68f067fd9008c0&units=metric`)
+        .then(Response => Response.json())
+        .then(data => {
+            if (data.cod === "404") {
+                display.textContent = "City not found!";
+            } else {
+                display.textContent = `Temperature in ${cityName.value}: ${data.main.temp}°C | ${data.weather[0].main}`;
+            }
+        })
+    })
+</script>
+</html>
